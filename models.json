@@ -1,0 +1,51 @@
+{
+  "provider": "opencode-go",
+  "base_url": "https://opencode.ai/zen/go/v1",
+  "last_synced": null,
+  "tracked_model_ids": [
+    "kimi-k3",
+    "kimi-k2.7-code",
+    "kimi-k2.6",
+    "qwen3.8-max",
+    "qwen3.7-max",
+    "qwen3.7-plus",
+    "qwen3.6-plus",
+    "deepseek-v4-pro",
+    "deepseek-v4-flash",
+    "glm-5.2",
+    "glm-5.1",
+    "minimax-m3",
+    "minimax-m2.7",
+    "mimo-v2.5-pro",
+    "mimo-v2.5",
+    "grok-4.5",
+    "gpt-5.6-luna",
+    "hy3"
+  ],
+  "unverified": ["hy3"],
+  "tiers": {
+    "premium": ["kimi-k3", "deepseek-v4-pro", "qwen3.8-max"],
+    "balanced": ["kimi-k2.7-code", "glm-5.2", "minimax-m3", "qwen3.7-max", "grok-4.5"],
+    "standard": ["glm-5.1", "qwen3.7-plus", "minimax-m2.7", "mimo-v2.5-pro"],
+    "fast": ["qwen3.6-plus", "kimi-k2.6", "deepseek-v4-flash", "mimo-v2.5"],
+    "bulk": ["gpt-5.6-luna", "hy3"]
+  },
+  "families": {
+    "kimi": ["kimi-k3", "kimi-k2.7-code", "kimi-k2.6"],
+    "qwen": ["qwen3.8-max", "qwen3.7-max", "qwen3.7-plus", "qwen3.6-plus"],
+    "deepseek": ["deepseek-v4-pro", "deepseek-v4-flash"],
+    "glm": ["glm-5.2", "glm-5.1"],
+    "minimax": ["minimax-m3", "minimax-m2.7"],
+    "mimo": ["mimo-v2.5-pro", "mimo-v2.5"],
+    "grok": ["grok-4.5"],
+    "gpt": ["gpt-5.6-luna"]
+  },
+  "endpoints": {
+    "anthropic_compatible": ["minimax-m3", "minimax-m2.7"],
+    "openai_compatible_default": true
+  },
+  "notes": {
+    "kimi-k2.7-code": "Code-tuned — preferred for straight code generation.",
+    "hy3": "UNVERIFIED model ID — confirm in the OpenCode dashboard before dispatching."
+  }
+}

@@ -1,0 +1,79 @@
+name: Sync OpenCode Go model list
+
+# Checks the OpenCode Go API for model additions/removals and opens a PR
+# updating models.json when the tracked list drifts.
+#
+# Requirements (one-time repo setup):
+#   1. Repo secret OPENCODE_GO_API_KEY (Settings → Secrets and variables → Actions)
+#   2. Settings → Actions → General → Workflow permissions:
+#      "Read and write permissions" + "Allow GitHub Actions to create and approve pull requests"
+
+on:
+  schedule:
+    - cron: "0 12 * * 1" # Mondays 12:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch live model list
+        env:
+          OPENCODE_GO_API_KEY: ${{ secrets.OPENCODE_GO_API_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${OPENCODE_GO_API_KEY}" ]; then
+            echo "OPENCODE_GO_API_KEY secret not set — skipping." >&2
+            exit 1
+          fi
+          curl -sf "https://opencode.ai/zen/go/v1/models" \
+            -H "Authorization: Bearer ${OPENCODE_GO_API_KEY}" \
+            -o live-models.json
+          jq -r '[.data[].id] | sort | .[]' live-models.json > live-ids.txt
+          echo "Live models:"
+          cat live-ids.txt
+
+      - name: Diff against models.json
+        id: diff
+        run: |
+          set -euo pipefail
+          jq -r '.tracked_model_ids | sort | .[]' models.json > tracked-ids.txt
+          if diff -u tracked-ids.txt live-ids.txt > model-drift.txt; then
+            echo "drift=false" >> "$GITHUB_OUTPUT"
+            echo "No drift."
+          else
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+            echo "Drift detected:"
+            cat model-drift.txt
+          fi
+
+      - name: Update models.json
+        if: steps.diff.outputs.drift == 'true'
+        run: |
+          set -euo pipefail
+          jq --slurpfile live <(jq '[.data[].id] | sort' live-models.json) \
+             '.tracked_model_ids = $live[0] | .last_synced = (now | todate)' \
+             models.json > models.json.tmp
+          mv models.json.tmp models.json
+          rm -f live-models.json live-ids.txt tracked-ids.txt model-drift.txt
+
+      - name: Open PR
+        if: steps.diff.outputs.drift == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: sync/opencode-models
+          title: "sync: OpenCode Go model list drift"
+          commit-message: "sync: update tracked_model_ids from OpenCode API"
+          body: |
+            Automated sync detected drift between `models.json` and the live
+            OpenCode Go model list. Review the diff — tier assignments in
+            `models.json`, `claude/CLAUDE.md`, `claude/agents/go-executor.md`,
+            README.md, and INSTALL.md may need a manual update for any
+            added/removed models.
+          delete-branch: true

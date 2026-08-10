@@ -1,0 +1,17 @@
+# Secrets — never commit
+config.env
+*.env
+.env*
+
+# Backups and retired files
+*.bak
+*.retired
+*.old
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
