@@ -5,7 +5,7 @@ argument-hint: [@model-or-family] <task description>
 
 Invoke the `go-executor` subagent to handle the following task.
 
-If the task begins with `@<model-id>` (e.g. `@glm-5.1`, `@kimi-k2.6`, `@qwen3.5-plus`, `@minimax-m2.5`) or `@<family>` (e.g. `@glm`, `@kimi`, `@mimo`, `@qwen`, `@minimax`), force that model / family choice and skip auto-selection.
+If the task begins with `@<model-id>` (e.g. `@glm-5.2`, `@kimi-k3`, `@qwen3.8-max`, `@minimax-m3`) or `@<family>` (e.g. `@glm`, `@kimi`, `@mimo`, `@qwen`, `@minimax`), force that model / family choice and skip auto-selection.
 
 Otherwise, auto-select the best Go model for the task based on complexity, speed needs, and rate-limit budget.
 
