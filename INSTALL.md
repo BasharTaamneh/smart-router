@@ -55,11 +55,13 @@ bash setup-global.sh          # or --force to skip the prompt
 ## Verify
 
 ```bash
-claude
-> /agents
+ls ~/.claude/agents/
+# Expect: advisor.md  fable-advisor.md  go-executor.md  reviewer.md
 ```
 
-Should list: `advisor`, `fable-advisor`, `go-executor`, `reviewer`.
+Note: newer Claude Code versions removed the `/agents` wizard. The agent
+files still load automatically at session start — to check from inside a
+session, just ask Claude "which subagents do I have?"
 
 Test the routing:
 

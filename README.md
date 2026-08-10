@@ -63,10 +63,16 @@ never committed). The installer then tests connectivity against the API.
 **Step 5 — Verify:**
 
 ```bash
+ls ~/.claude/agents/
+# Expect: advisor.md  fable-advisor.md  go-executor.md  reviewer.md
+
 claude
-> /agents      # should list: advisor, fable-advisor, go-executor, reviewer
 > /go write a hello-world function in Python
 ```
+
+(Newer Claude Code versions removed the `/agents` wizard — the agent files
+still load automatically; you can also just ask Claude "which subagents do
+I have?")
 
 **Step 6 (optional) — Enable Fable.** Add usage credits in your Claude account
 billing settings. Skip this entirely if you don't want a metered tier —
