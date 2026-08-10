@@ -1,5 +1,5 @@
 ---
-description: Dispatch a task to the OpenCode Go model pool (12 models). Auto-picks the best model, or force one with @<model-id> or @<family>.
+description: Dispatch a task to the OpenCode Go model pool (18 models). Auto-picks the best model, or force one with @<model-id> or @<family>.
 argument-hint: [@model-or-family] <task description>
 ---
 

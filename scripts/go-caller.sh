@@ -2,11 +2,9 @@
 # go-caller.sh — Calls OpenCode Go models via API
 # Usage: bash go-caller.sh "<model_id>" "<prompt>" [--file <path>]
 #
-# Supported models and their endpoints:
-#   OpenAI-compatible: glm-5.1, glm-5, kimi-k2.5, kimi-k2.6,
-#                      mimo-v2-pro, mimo-v2-omni, mimo-v2.5-pro, mimo-v2.5,
-#                      qwen3.5-plus, qwen3.6-plus
-#   Anthropic-compatible: minimax-m2.5, minimax-m2.7
+# Supported models: the 18 OpenCode Go plan models (see models.json in the smart-router repo)
+#   Anthropic-compatible endpoint: minimax-m3, minimax-m2.7
+#   OpenAI-compatible endpoint: all others
 
 set -euo pipefail
 
@@ -61,7 +59,7 @@ fi
 BASE_URL="https://opencode.ai/zen/go/v1"
 
 # MiniMax models use Anthropic-compatible endpoint
-ANTHROPIC_MODELS=("minimax-m2.5" "minimax-m2.7")
+ANTHROPIC_MODELS=("minimax-m3" "minimax-m2.7")
 
 IS_ANTHROPIC=false
 for m in "${ANTHROPIC_MODELS[@]}"; do
