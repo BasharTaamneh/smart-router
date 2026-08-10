@@ -2,9 +2,22 @@
 
 ## Prerequisites
 
-- Claude Code (WSL2/Linux/macOS) with an active plan
-- An OpenCode Go plan API key — https://opencode.ai/auth (Go tab)
-- `curl` and `jq` (the installer installs them on Debian/Ubuntu if missing)
+Two paid cloud subscriptions are required, one optional metered add-on:
+
+1. **Claude subscription (Pro or higher) with Claude Code** — powers the
+   orchestrator (Sonnet), `@advisor` (Opus), and `@reviewer`. Runs on your
+   plan limits.
+2. **OpenCode Go plan** — a paid cloud subscription at https://opencode.ai.
+   All 18 Go models are hosted on OpenCode's servers and called over HTTPS by
+   `go-caller.sh`; nothing runs locally. After subscribing, generate your API
+   key at https://opencode.ai/auth (**Go tab**) — you'll paste it during
+   install.
+3. **Fable usage credits (optional)** — pay-per-use credits in your Claude
+   account billing, only for `@fable-advisor`. Without them the router works
+   fully; `/fable` falls back to `@advisor` and continues.
+
+Also needed: `curl` and `jq` (the installer installs them on Debian/Ubuntu
+if missing), plus WSL2/Linux/macOS.
 
 ## Full install
 
@@ -88,6 +101,25 @@ Valid model IDs for `/go @<model>`: `kimi-k3`, `kimi-k2.7-code`, `kimi-k2.6`,
 Rate limits per model are intentionally `TBD` in `claude/agents/go-executor.md` —
 fill them in from your OpenCode dashboard; the load-spreading rule depends on
 real numbers, not guesses.
+
+## Adding your API key (if you skipped the installer prompt)
+
+The router reads one secret: `OPENCODE_GO_API_KEY` in
+`~/.smart-router/config.env`. If you installed before subscribing to OpenCode,
+or ran setup non-interactively, add the key yourself:
+
+```bash
+mkdir -p ~/.smart-router
+echo 'OPENCODE_GO_API_KEY=paste_your_key_here' > ~/.smart-router/config.env
+chmod 600 ~/.smart-router/config.env
+```
+
+Test it end-to-end (works on any Claude plan — only the OpenCode key matters
+for the Go pool):
+
+```bash
+bash ~/smart-router/go-caller.sh "qwen3.6-plus" "reply with the word: ok"
+```
 
 ## Updating your API key
 

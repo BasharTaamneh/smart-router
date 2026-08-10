@@ -32,6 +32,8 @@ jobs:
             echo "OPENCODE_GO_API_KEY secret not set — skipping." >&2
             exit 1
           fi
+          # NOTE: assumes an OpenAI-compatible /models endpoint. If this 404s,
+          # replace the URL with the models endpoint shown in your OpenCode dashboard.
           curl -sf "https://opencode.ai/zen/go/v1/models" \
             -H "Authorization: Bearer ${OPENCODE_GO_API_KEY}" \
             -o live-models.json
